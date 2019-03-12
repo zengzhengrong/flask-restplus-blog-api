@@ -35,17 +35,17 @@ users = [
     {
     'username':'admin',
     'email':'admin@163.com',
-    'password':'admin556689'
+    'password':'admin'
     },
     {
     'username':'zzr',
     'email':'zzr@163.com',
-    'password':'zzr556689'
+    'password':'zzr'
     },
     {
     'username':'jianbing',
     'email':'506862754@163.com',
-    'password':'jianbing556689'
+    'password':'jianbing'
     }   
 ]
 categorys =[
