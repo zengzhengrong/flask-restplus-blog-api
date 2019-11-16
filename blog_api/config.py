@@ -5,6 +5,7 @@ class Config:
     SECRET_KEY = 'zzr'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # SERVER_NAME = '0.0.0.0'
     # SQLALCHEMY_POOL_TIMEOUT = 10
     # SQLALCHEMY_MAX_OVERFLOW = 20
     #配置email
