@@ -55,7 +55,7 @@ class PostList(Resource):
         args = pagination_arguments.parse_args(request)
         page = args.get('page',1)
         per_page = args.get('per_page', 10)
-        posts = Post.query.paginate(page, per_page, error_out=False)
+        posts = Post.query.order_by(Post.created_time.desc()).paginate(page, per_page, error_out=False)
         return posts
     @post_api.doc('create_post')
     @admin_dev_token_required

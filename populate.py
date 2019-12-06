@@ -29,7 +29,17 @@ posts = [
 'Ruby',
 'SAS',
 'Erlang',
-'OpenCL'
+'OpenCL',
+'APL',
+'AutoIt',
+'BASIC',
+'Eiffel',
+'Forth',
+'Frink',
+'ICI',
+'Lisp',
+'Lua',
+'Pascal'
 ]
 users = [
     {
@@ -71,7 +81,7 @@ def populte():
     print('creating......')
     for user in users:
         hash_password = bcrypt.generate_password_hash(user.get('password')).decode('utf-8')
-        create_user = User(public_id=str(uuid.uuid4()),username=user.get('username'),email=user.get('email'),password=hash_password)
+        create_user = User(public_id=str(uuid.uuid4()),username=user.get('username'),email=user.get('email'),password=hash_password,admin=True)
         db.session.add(create_user)
         print('create user success')
     print('create users done')
