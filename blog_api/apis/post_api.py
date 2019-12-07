@@ -42,21 +42,37 @@ pagination_arguments.add_argument('page', type=int, required=False, default=1, h
 pagination_arguments.add_argument('bool', type=bool, required=False, default=True, help='Page number')
 pagination_arguments.add_argument('per_page', type=int, required=False, choices=[2, 10, 20, 30, 40, 50],
                                   default=10, help='Results per page {error_msg}')
+# add post query by datetmie argument
+pagination_arguments.add_argument('lt_datetime',type=str,required=False,default=datetime.now().strftime('%Y-%m-%d-%H-%M-%S'),
+                                help='Query by datetime')
+
 
 # views
 @post_api.route('/')
 class PostList(Resource):
     '''Shows a list of all posts, and lets you POST to add new post'''
+    
     @post_api.doc('list_post')
     @post_api.expect(pagination_arguments,validate=True)
     @post_api.marshal_list_with(perpage_of_posts)
+    @post_api.errorhandler(exception=ValueError)
     def get(self):
         '''List all posts'''
         args = pagination_arguments.parse_args(request)
         page = args.get('page',1)
         per_page = args.get('per_page', 10)
-        posts = Post.query.order_by(Post.created_time.desc()).paginate(page, per_page, error_out=False)
+        lt_datetime = args.get('lt_datetime',datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
+        # parse time to python datetime
+        try:
+            parse_strtime = datetime.strptime(lt_datetime,'%Y-%m-%d-%H-%M-%S')
+        except ValueError as e:
+            error = post_api.error_handlers.get(ValueError)
+            if error:
+                return abort(500,f'{e}')
+
+        posts = Post.query.order_by(Post.created_time.desc()).filter(Post.created_time < parse_strtime).paginate(page, per_page, error_out=False)
         return posts
+
     @post_api.doc('create_post')
     @admin_dev_token_required
     @post_api.expect(post_required)
@@ -68,7 +84,7 @@ class PostList(Resource):
         category = Category.query.filter_by(name=data['category']).first()
         if not category:
             return abort(404,'category not found')
-        new_post = Post(category=category,title=data['title'],body=data['body'],author=current_user)
+        new_post = Post(category=category,title=data['title'],body=data['body'],author=current_user,created_time=datetime.now())
         print(new_post)
         db.session.add(new_post)
         db.session.commit()
