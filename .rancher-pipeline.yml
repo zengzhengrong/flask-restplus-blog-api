@@ -4,6 +4,7 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
+      mirror: 'https://tzkiu70c.mirror.aliyuncs.com'
       tag: flask-blog-api:${CICD_EXECUTION_SEQUENCE}
 - name: Deploy
   steps:
