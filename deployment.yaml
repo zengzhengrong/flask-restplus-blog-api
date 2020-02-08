@@ -1,0 +1,38 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: flask-blog-api-service
+  namesapce: default
+spec:
+  selector:
+    app: flask-blog-api
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-blog-api
+  labels:
+    app: flask-blog-api
+  namesapce: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-blog-api
+  template:
+    metadata:
+      labels:
+        app: flask-blog-api
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: flask-blog-api
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        ports:
+        - containerPort: 5000
