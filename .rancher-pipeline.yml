@@ -5,10 +5,10 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: flask-blog-api:${CICD_EXECUTION_SEQUENCE}
-  - name: Deploy
-    steps:
-    - applyYamlConfig:
-        path: ./deployment.yaml
+- name: Deploy
+  steps:
+  - applyYamlConfig:
+    path: ./deployment.yaml
 timeout: 120
 notification: {}
     
