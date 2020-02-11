@@ -9,7 +9,5 @@ stages:
   steps:
   - applyYamlConfig:
       path: ./deployment.yaml
-    env:
-      NAMESPACE: default
 timeout: 120
 notification: {}
